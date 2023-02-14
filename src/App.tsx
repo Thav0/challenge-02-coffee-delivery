@@ -7,16 +7,16 @@ function App() {
     <header className="container mx-auto py-8 flex justify-between items-center">
       <Logo />
       <div className="flex items-center">
-        <div className="flex items-center">
-        <LocationIcon />
-        Porto, Portugal
+        <div className="flex items-center p-2 bg-purple-light rounded-md">
+          <LocationIcon />
+          <span className="ml-2 text-sm text-purple-dark">Porto, Portugal</span>
         </div>
-        <div>
+        <div className="ml-3 p-2 rounded-md bg-yellow-light text-yellow-dark">
           <CartIcon />
         </div>
       </div>
     </header>
-  )
+  );
 }
 
-export default App
+export default App;
