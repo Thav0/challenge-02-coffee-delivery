@@ -1,5 +1,5 @@
-import { createContext, ReactNode } from "react";
-import { Coffe, UserAddress } from "../reducers/reducer";
+import { createContext, ReactNode, useReducer, useState } from "react";
+import { Coffe, coffeesReducer, UserAddress } from "../reducers/reducer";
 
 enum PAYMENT_TYPE {
   CREDIT_CARD = 'CREDIT_CARD',
@@ -10,12 +10,13 @@ enum PAYMENT_TYPE {
 interface CoffeeContextType {
   totalItems: number;
   cartItems: Coffe[];
-  useAddress: UserAddress;
+  userAddress: UserAddress | null;
   paymentType: PAYMENT_TYPE;
-  addToCart: () => void;
-  subtractFromCart: () => void;
-  removeFromCart: () => void;
-  updateUserAddress: () => void;
+  addToCart: (coffee: Coffe) => void;
+  subtractFromCart: (coffeeId: number) => void;
+  removeFromCart: (coffeeId: number) => void;
+  setUserAddress: (address: UserAddress) => void;
+  setPaymentTypeHandler: (paymentType:PAYMENT_TYPE) => void;
 }
 
 export const CoffeeContext = createContext({} as CoffeeContextType);
@@ -25,5 +26,50 @@ interface CoffeeContextProviderProps {
 }
 
 export function CoffeeContextProvider({children}: CoffeeContextProviderProps) {
+  const [coffeesState, dispatch] = useReducer(
+    coffeesReducer, {
+      totalItems: 0,
+      cartItems: [],
+      userAddress: null,
+    }
+  )
+  const {cartItems, totalItems, userAddress} = coffeesState
+  const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD)
 
+  function addToCart(coffee: Coffe) {
+    // dispatch add to cart
+  }
+
+  function subtractFromCart(coffeeId: number) {
+    // dispatch subtract from cart
+  }
+
+  function removeFromCart(coffeeId: number) {
+    // dispatch
+  }
+
+  function setUserAddress(address: UserAddress) {
+    // dispatch
+  }
+
+  function setPaymentTypeHandler(paymentType: PAYMENT_TYPE) {
+    setPaymentType(paymentType)
+  }
+
+  return (
+    <CoffeeContext.Provider
+      value={{
+        totalItems,
+        cartItems,
+        userAddress,
+        paymentType,
+        addToCart,
+        subtractFromCart,
+        removeFromCart,
+        setUserAddress,
+        setPaymentTypeHandler
+      }}
+    >
+      {children}
+    </CoffeeContext.Provider>)
 }

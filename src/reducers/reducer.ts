@@ -15,10 +15,21 @@ export interface UserAddress {
   additionalInfo: string;
 }
 
-export function coffeesReducer(state, action: any){
+interface CoffeesState {
+  totalItems: number;
+  cartItems: Coffe[];
+  userAddress: UserAddress | null;
+}
+
+export function coffeesReducer(state: CoffeesState, action: any){
   // case ActionTypes.ADD_NEW_CYCLE:
   //     return produce(state, (draft) => {
   //       draft.cycles.push(action.payload.newCycle)
   //       draft.activeCycleId = action.payload.newCycle.id
   //     })
+
+  switch (action.type) {
+    default:
+          return state
+  }
 }
