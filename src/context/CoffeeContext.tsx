@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useReducer, useState } from "react";
+import { addToCartAction } from "../reducers/actions";
 import { Coffe, coffeesReducer, UserAddress } from "../reducers/reducer";
 
 enum PAYMENT_TYPE {
-  CREDIT_CARD = 'CREDIT_CARD',
-  DEBIT_CARD = 'DEBIT_CARD',
-  MONEY = 'MONEY'
+  CREDIT_CARD = "CREDIT_CARD",
+  DEBIT_CARD = "DEBIT_CARD",
+  MONEY = "MONEY",
 }
 
 interface CoffeeContextType {
@@ -16,28 +17,31 @@ interface CoffeeContextType {
   subtractFromCart: (coffeeId: number) => void;
   removeFromCart: (coffeeId: number) => void;
   setUserAddress: (address: UserAddress) => void;
-  setPaymentTypeHandler: (paymentType:PAYMENT_TYPE) => void;
+  setPaymentTypeHandler: (paymentType: PAYMENT_TYPE) => void;
 }
 
 export const CoffeeContext = createContext({} as CoffeeContextType);
 
 interface CoffeeContextProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
-export function CoffeeContextProvider({children}: CoffeeContextProviderProps) {
-  const [coffeesState, dispatch] = useReducer(
-    coffeesReducer, {
-      totalItems: 0,
-      cartItems: [],
-      userAddress: null,
-    }
-  )
-  const {cartItems, totalItems, userAddress} = coffeesState
-  const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD)
+export function CoffeeContextProvider({
+  children,
+}: CoffeeContextProviderProps) {
+  const [coffeesState, dispatch] = useReducer(coffeesReducer, {
+    totalItems: 0,
+    cartItems: [],
+    userAddress: null,
+  });
+  const { cartItems, totalItems, userAddress } = coffeesState;
+  const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD);
 
   function addToCart(coffee: Coffe) {
     // dispatch add to cart
+    dispatch(
+      addToCartAction(coffee)
+    );
   }
 
   function subtractFromCart(coffeeId: number) {
@@ -53,7 +57,7 @@ export function CoffeeContextProvider({children}: CoffeeContextProviderProps) {
   }
 
   function setPaymentTypeHandler(paymentType: PAYMENT_TYPE) {
-    setPaymentType(paymentType)
+    setPaymentType(paymentType);
   }
 
   return (
@@ -67,9 +71,10 @@ export function CoffeeContextProvider({children}: CoffeeContextProviderProps) {
         subtractFromCart,
         removeFromCart,
         setUserAddress,
-        setPaymentTypeHandler
+        setPaymentTypeHandler,
       }}
     >
       {children}
-    </CoffeeContext.Provider>)
+    </CoffeeContext.Provider>
+  );
 }

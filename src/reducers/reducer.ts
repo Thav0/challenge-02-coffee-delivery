@@ -1,3 +1,6 @@
+import produce from "immer";
+import { ActionTypes } from "./actions";
+
 export interface Coffe {
   id: number;
   name: string;
@@ -21,7 +24,7 @@ interface CoffeesState {
   userAddress: UserAddress | null;
 }
 
-export function coffeesReducer(state: CoffeesState, action: any){
+export function coffeesReducer(state: CoffeesState, action: any) {
   // case ActionTypes.ADD_NEW_CYCLE:
   //     return produce(state, (draft) => {
   //       draft.cycles.push(action.payload.newCycle)
@@ -29,7 +32,12 @@ export function coffeesReducer(state: CoffeesState, action: any){
   //     })
 
   switch (action.type) {
+    case ActionTypes.ADD_TO_CART:
+      return produce(state, (draft) => {
+        draft.totalItems++;
+      });
+
     default:
-          return state
+      return state;
   }
 }
