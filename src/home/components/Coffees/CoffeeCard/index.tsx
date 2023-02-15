@@ -3,7 +3,6 @@ import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
 import { ReactComponent as MinusIcon } from "@assets/icons/minus.svg";
 import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
 
-
 export function CoffeeCard() {
   return (
     <div className="bg-base-card p-5 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md">
