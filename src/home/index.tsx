@@ -5,7 +5,9 @@ function Home() {
   return (
     <>
       <Banner />
-      <Coffees />
+      <div className="container mx-auto py-10">
+        <Coffees />
+      </div>
     </>
   );
 }
