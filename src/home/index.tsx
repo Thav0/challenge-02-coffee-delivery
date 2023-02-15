@@ -2,6 +2,7 @@ import { ReactComponent as Logo } from "@assets/logo.svg";
 import { ReactComponent as LocationIcon } from "@assets/icons/location.svg";
 import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
 import { Banner } from "./components/Banner";
+import { Coffees } from "./components/Coffees";
 
 function Home() {
   return (
@@ -14,12 +15,12 @@ function Home() {
             <span className="ml-2 text-sm">Porto, Portugal</span>
           </div>
           <div className="ml-3 p-2 rounded-md bg-yellow-light text-yellow-dark">
-            <CartIcon className=" w-4 h-4" />
+            <CartIcon className="w-4 h-4" />
           </div>
         </div>
       </header>
       <Banner />
-      <section></section>
+      <Coffees />
     </div>
   );
 }
