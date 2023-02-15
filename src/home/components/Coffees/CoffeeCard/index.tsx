@@ -2,8 +2,23 @@ import TraditionalEspressoIMG from "@assets/traditional-espresso.png";
 import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
 import { ReactComponent as MinusIcon } from "@assets/icons/minus.svg";
 import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
+import { useState } from "react";
 
 export function CoffeeCard() {
+  const [quantity, setQuantity] = useState(1);
+
+  function handleSubstractQuantity() {
+    if (1 === quantity) {
+      return;
+    }
+
+    setQuantity(quantity - 1);
+  }
+
+  function handleAddQuantity() {
+    setQuantity(quantity + 1);
+  }
+
   return (
     <div className="bg-base-card p-5 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md">
       <img
@@ -31,11 +46,11 @@ export function CoffeeCard() {
         </div>
         <div className="flex items-center">
           <div className="flex items-center rounded-md py-1 px-2 bg-base-button space-x-2.5">
-            <button className="text-purple">
+            <button className="text-purple" onClick={handleSubstractQuantity}>
               <MinusIcon className="w-3 h-3" />
             </button>
-            <span className="text-base-title">1</span>
-            <button className="text-purple text-xl">
+            <span className="text-base-title">{quantity}</span>
+            <button className="text-purple text-xl" onClick={handleAddQuantity}>
               <PlusIcon className="w-3 h-3" />
             </button>
           </div>
