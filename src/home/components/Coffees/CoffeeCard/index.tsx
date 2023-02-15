@@ -1,5 +1,8 @@
 import TraditionalEspressoIMG from "@assets/traditional-espresso.png";
 import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
+import { ReactComponent as MinusIcon } from "@assets/icons/minus.svg";
+import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
+
 
 export function CoffeeCard() {
   return (
@@ -23,13 +26,19 @@ export function CoffeeCard() {
       <div className="flex justify-between items-center mt-8">
         <div className="text-base-text">
           <span className="text-xs">R$</span>
-          <span className="font-heading leading-none text-2xl ml-1">9,90</span>
+          <span className="font-heading font-black leading-none text-2xl ml-1">
+            9,90
+          </span>
         </div>
         <div className="flex items-center">
           <div className="flex items-center rounded-md py-1 px-2 bg-base-button space-x-2.5">
-            <button className="text-purple">-</button>
+            <button className="text-purple">
+              <MinusIcon className="w-3 h-3" />
+            </button>
             <span className="text-base-title">1</span>
-            <button className="text-purple text-xl">+</button>
+            <button className="text-purple text-xl">
+              <PlusIcon className="w-3 h-3" />
+            </button>
           </div>
           <div className="bg-purple-dark text-white p-2 ml-2 rounded-md">
             <CartIcon className="w-4 h-4" />
