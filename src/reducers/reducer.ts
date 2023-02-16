@@ -25,16 +25,19 @@ interface CoffeesState {
 }
 
 export function coffeesReducer(state: CoffeesState, action: any) {
-  // case ActionTypes.ADD_NEW_CYCLE:
-  //     return produce(state, (draft) => {
-  //       draft.cycles.push(action.payload.newCycle)
-  //       draft.activeCycleId = action.payload.newCycle.id
-  //     })
-
   switch (action.type) {
     case ActionTypes.ADD_TO_CART:
       return produce(state, (draft) => {
-        draft.totalItems++;
+        const cartItemIndex = draft.cartItems.findIndex(
+          (item) => item.id === action.payload.coffee.id
+        );
+
+        if (cartItemIndex < 0) {
+          draft.cartItems.push(action.payload.coffee);
+          draft.totalItems++;
+        } else if (cartItemIndex >= 0) {
+          draft.cartItems[cartItemIndex].quantity++;
+        }
       });
 
     default:

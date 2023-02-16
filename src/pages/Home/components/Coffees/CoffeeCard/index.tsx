@@ -3,10 +3,10 @@ import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
 import { ReactComponent as MinusIcon } from "@assets/icons/minus.svg";
 import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
 import { useContext, useState } from "react";
-import { CoffeeContext } from "../../../../context/CoffeeContext";
+import { CoffeeContext } from "../../../../../context/CoffeeContext";
 
 export function CoffeeCard() {
-  const {addToCart} = useContext(CoffeeContext)
+  const { addToCart } = useContext(CoffeeContext);
   const [quantity, setQuantity] = useState(1);
 
   function handleSubstractQuantity() {
@@ -56,16 +56,21 @@ export function CoffeeCard() {
               <PlusIcon className="w-3 h-3" />
             </button>
           </div>
-          <div 
-            className="bg-purple-dark text-white p-2 ml-2 rounded-md" 
-            onClick={() => addToCart({
-            id: 1,
-            name: "Café espresso",
-            quantity: 1,
-            price: 9.99,
-          })}>
+          <button
+            type="button"
+            className="bg-purple-dark text-white p-2 ml-2 rounded-md"
+            onClick={() => {
+              setQuantity(1);
+              addToCart({
+                id: 1,
+                name: "Café espresso",
+                quantity: 1,
+                price: 9.99,
+              });
+            }}
+          >
             <CartIcon className="w-4 h-4" />
-          </div>
+          </button>
         </div>
       </div>
     </div>
