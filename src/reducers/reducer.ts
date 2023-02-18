@@ -42,6 +42,53 @@ export function coffeesReducer(state: CoffeesState, action: any) {
         }
       });
 
+    case ActionTypes.UPDATE_ITEM_QUANTITY:
+      return produce(state, (draft) => {
+        const cartItemIndex = draft.cartItems.findIndex(
+          (item) => item.id === action.payload.coffeeId
+        );
+
+        if (cartItemIndex < 0) {
+          return state;
+        }
+
+        draft.cartItems[cartItemIndex].quantity++;
+      });
+
+    case ActionTypes.SUBTRACT_FROM_CART:
+      return produce(state, (draft) => {
+        const cartItemIndex = draft.cartItems.findIndex(
+          (item) => item.id === action.payload.coffeeId
+        );
+
+        if (cartItemIndex < 0) {
+          return state;
+        }
+
+        const item = draft.cartItems[cartItemIndex];
+
+        if (item.quantity === 1) {
+          draft.cartItems.filter((currentItem) => currentItem.id !== item.id);
+        } else {
+          draft.cartItems[cartItemIndex].quantity--;
+        }
+      });
+
+    case ActionTypes.REMOVE_FROM_CART:
+      return produce(state, (draft) => {
+        const cartItemIndex = draft.cartItems.findIndex(
+          (item) => item.id === action.payload.coffeeId
+        );
+
+        if (cartItemIndex < 0) {
+          return state;
+        }
+
+        const item = draft.cartItems[cartItemIndex];
+
+        draft.cartItems.filter((currentItem) => currentItem.id !== item.id);
+      });
+
     default:
       return state;
   }

@@ -3,15 +3,31 @@ import { ReactComponent as DollarIcon } from "@assets/icons/dollar.svg";
 import { ReactComponent as BankIcon } from "@assets/icons/bank.svg";
 import { ReactComponent as CreditCardIcon } from "@assets/icons/credit-card.svg";
 import { ReactComponent as CashIcon } from "@assets/icons/cash.svg";
+import { ReactComponent as TrashIcon } from "@assets/icons/trash.svg";
 import { Input } from "../../components/Input";
 import { PaymentButton } from "../../components/PaymentButton";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CoffeeContext } from "../../context/CoffeeContext";
+import { InputQuantity } from "../../components/InputQuantity";
+import { redirect } from "react-router-dom";
 
 export function Checkout() {
-  const { cartItems } = useContext(CoffeeContext);
+  const { cartItems, subtractFromCart, updateQuantity } =
+    useContext(CoffeeContext);
 
-  console.log(cartItems);
+  function handleUpdateItemQuantity(coffeeId: number) {
+    updateQuantity(coffeeId);
+  }
+
+  function handleSubtractItemQuantity(coffeeId: number) {
+    subtractFromCart(coffeeId);
+  }
+
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      redirect("/");
+    }
+  }, []);
 
   return (
     <div className="container mx-auto grid grid-cols-2 gap-x-8 mt-10">
@@ -88,7 +104,41 @@ export function Checkout() {
           Cafés selecionados
         </h2>
         <div className="bg-base-card p-10 mt-3 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md">
-          <div className="flex items-center"></div>
+          {cartItems.map((item) => (
+            <div className="flex justify-between" key={item.id}>
+              <div className="flex">
+                <img
+                  src={`/src/assets/${item.image}`}
+                  alt={item.name}
+                  className=""
+                />
+
+                <div className="ml-5">
+                  <div className="text-base-subtitle uppercase">
+                    {item.name}
+                  </div>
+                  <div className="flex mt-2">
+                    <InputQuantity
+                      quantity={item.quantity}
+                      handleAdd={() => handleUpdateItemQuantity(item.id)}
+                      handleSubtract={() => handleSubtractItemQuantity(item.id)}
+                    />
+                    <div className="flex items-center p-2 bg-base-button rounded-md ml-2 hover:bg-base-hover cursor-pointer">
+                      <TrashIcon className="w-5 h-5 text-purple" />
+                      <div className="text-base-text text-xs ml-2">REMOVER</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-base-text font-bold">
+                {item.price.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

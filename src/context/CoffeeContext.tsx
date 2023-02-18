@@ -1,5 +1,9 @@
 import { createContext, ReactNode, useReducer, useState } from "react";
-import { addToCartAction } from "../reducers/actions";
+import {
+  addToCartAction,
+  subtractItemQuantityAction,
+  updateItemQuantityAction,
+} from "../reducers/actions";
 import { Coffe, coffeesReducer, UserAddress } from "../reducers/reducer";
 
 enum PAYMENT_TYPE {
@@ -15,6 +19,7 @@ interface CoffeeContextType {
   paymentType: PAYMENT_TYPE;
   addToCart: (coffee: Coffe) => void;
   subtractFromCart: (coffeeId: number) => void;
+  updateQuantity: (cofeeId: number) => void;
   removeFromCart: (coffeeId: number) => void;
   setUserAddress: (address: UserAddress) => void;
   setPaymentTypeHandler: (paymentType: PAYMENT_TYPE) => void;
@@ -38,18 +43,15 @@ export function CoffeeContextProvider({
   const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD);
 
   function addToCart(coffee: Coffe) {
-    // dispatch add to cart
-    dispatch(
-      addToCartAction(coffee)
-    );
+    dispatch(addToCartAction(coffee));
   }
 
   function subtractFromCart(coffeeId: number) {
-    // dispatch subtract from cart
+    dispatch(subtractItemQuantityAction(coffeeId));
   }
 
   function removeFromCart(coffeeId: number) {
-    // dispatch
+    dispatch(removeFromCart(coffeeId));
   }
 
   function setUserAddress(address: UserAddress) {
@@ -60,6 +62,10 @@ export function CoffeeContextProvider({
     setPaymentType(paymentType);
   }
 
+  function updateQuantity(coffeeId: number) {
+    dispatch(updateItemQuantityAction(coffeeId));
+  }
+
   return (
     <CoffeeContext.Provider
       value={{
@@ -68,6 +74,7 @@ export function CoffeeContextProvider({
         userAddress,
         paymentType,
         addToCart,
+        updateQuantity,
         subtractFromCart,
         removeFromCart,
         setUserAddress,

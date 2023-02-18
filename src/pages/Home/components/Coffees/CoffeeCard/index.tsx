@@ -1,4 +1,3 @@
-import TraditionalEspressoIMG from "@assets/traditional-espresso.png";
 import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
 import { ReactComponent as MinusIcon } from "@assets/icons/minus.svg";
 import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
@@ -30,7 +29,7 @@ export function CoffeeCard({ coffee }: CoffeeCardProp) {
     <div className="bg-base-card p-5 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md">
       <img
         src={`/src/assets/${coffee.image}`}
-        alt="Expresso Tradicional"
+        alt={coffee.name}
         className="mx-auto -mt-10"
       />
       <div className="text-center mt-3">
@@ -70,6 +69,7 @@ export function CoffeeCard({ coffee }: CoffeeCardProp) {
                 quantity,
                 price: coffee.price,
                 image: coffee.image,
+                description: coffee.description
               });
             }}
           >
