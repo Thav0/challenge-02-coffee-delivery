@@ -18,6 +18,7 @@ interface CoffeeContextType {
   cartItems: Coffe[];
   userAddress: UserAddress | null;
   paymentType: PAYMENT_TYPE;
+  shippingPrice: number;
   addToCart: (coffee: Coffe) => void;
   subtractFromCart: (coffeeId: number) => void;
   updateQuantity: (cofeeId: number) => void;
@@ -42,6 +43,7 @@ export function CoffeeContextProvider({
   const { cartItems, userAddress } = coffeesState;
   const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD);
   const totalItems = cartItems.length;
+  const shippingPrice = 3.5;
 
   function addToCart(coffee: Coffe) {
     dispatch(addToCartAction(coffee));
@@ -74,6 +76,7 @@ export function CoffeeContextProvider({
         cartItems,
         userAddress,
         paymentType,
+        shippingPrice,
         addToCart,
         updateQuantity,
         subtractFromCart,

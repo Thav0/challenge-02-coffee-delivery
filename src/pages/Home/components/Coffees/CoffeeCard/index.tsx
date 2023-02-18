@@ -33,13 +33,19 @@ export function CoffeeCard({ coffee }: CoffeeCardProp) {
         className="mx-auto -mt-10"
       />
       <div className="text-center mt-3">
-        <span className="inline-block text-center rounded-md py-1 px-2 font-bold text-s bg-yellow-light text-yellow-dark">
-          TRADICIONAL
-        </span>
+        <div className="space-x-1 uppercase">
+          {coffee.types.map((type) => (
+            <span className="inline-block rounded-full text-center  py-1 px-2 font-bold text-s bg-yellow-light text-yellow-dark">
+              {type}
+            </span>
+          ))}
+        </div>
         <h3 className="mt-4 text-title-s font-heading font-bold text-base-subtitle">
           {coffee.name}
         </h3>
-        <p className="text-base-label text-regular-s">{coffee.description}</p>
+        <p className="text-base-label text-regular-s h-9">
+          {coffee.description}
+        </p>
       </div>
       <div className="flex justify-between items-center mt-8">
         <div className="text-base-text">
@@ -69,7 +75,7 @@ export function CoffeeCard({ coffee }: CoffeeCardProp) {
                 quantity,
                 price: coffee.price,
                 image: coffee.image,
-                description: coffee.description
+                description: coffee.description,
               });
             }}
           >

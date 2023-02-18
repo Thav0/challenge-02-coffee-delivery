@@ -10,11 +10,17 @@ import { useContext, useEffect } from "react";
 import { CoffeeContext } from "../../context/CoffeeContext";
 import { InputQuantity } from "../../components/InputQuantity";
 import { useNavigate } from "react-router-dom";
+import { numberToCurrencyBrazil } from "../../utils/numberToCurrencyBrazil";
 
 export function Checkout() {
   const navigate = useNavigate();
-  const { cartItems, subtractFromCart, updateQuantity, removeFromCart } =
-    useContext(CoffeeContext);
+  const {
+    cartItems,
+    subtractFromCart,
+    updateQuantity,
+    removeFromCart,
+    shippingPrice,
+  } = useContext(CoffeeContext);
 
   function handleUpdateItemQuantity(coffeeId: number) {
     updateQuantity(coffeeId);
@@ -26,6 +32,16 @@ export function Checkout() {
 
   function handleRemoveItemFromCart(coffeeId: number) {
     removeFromCart(coffeeId);
+  }
+
+  function totalCartItems() {
+    return cartItems.reduce((accumulator, coffeeItem) => {
+      return accumulator + coffeeItem.quantity * coffeeItem.price;
+    }, 0);
+  }
+
+  function totalCart() {
+    return totalCartItems() + shippingPrice;
   }
 
   useEffect(() => {
@@ -108,14 +124,14 @@ export function Checkout() {
         <h2 className="font-heading font-bold text-title-xs text-base-subtitle">
           Cafés selecionados
         </h2>
-        <div className="bg-base-card p-10 mt-3 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md">
+        <div className="grid-flow-row bg-base-card p-10 mt-3 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md divide-y divide-y-base-button">
           {cartItems.map((item) => (
-            <div className="flex justify-between" key={item.id}>
+            <div className="flex justify-between py-6" key={item.id}>
               <div className="flex">
                 <img
                   src={`/src/assets/${item.image}`}
                   alt={item.name}
-                  className=""
+                  className="w-16 h-16"
                 />
 
                 <div className="ml-5">
@@ -140,13 +156,27 @@ export function Checkout() {
               </div>
 
               <div className="text-base-text font-bold">
-                {item.price.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
+                {numberToCurrencyBrazil(item.price)}
               </div>
             </div>
           ))}
+          <div className="py-6 space-y-3">
+            <div className="flex items-center justify-between text-base-text">
+              <div className="text-sm">Total de items</div>
+              <div>{numberToCurrencyBrazil(totalCartItems())}</div>
+            </div>
+            <div className="flex items-center justify-between text-base-text">
+              <div className="text-sm">Entrega</div>
+              <div>{numberToCurrencyBrazil(shippingPrice)}</div>
+            </div>
+            <div className="flex items-center justify-between text-title-s text-base-subtitle">
+              <div>Total</div>
+              <div>{numberToCurrencyBrazil(totalCart())}</div>
+            </div>
+          </div>
+          <button className="bg-yellow text-white w-full py-3 uppercase font-bold text-sm rounded-md hover:bg-yellow-dark">
+            Confirmar Pedido
+          </button>
         </div>
       </div>
     </div>

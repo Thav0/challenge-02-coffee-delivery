@@ -8,6 +8,7 @@ export interface Coffe {
   price: number;
   image: string;
   description: string;
+  types: string[];
 }
 
 export interface UserAddress {
