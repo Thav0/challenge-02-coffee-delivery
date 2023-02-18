@@ -9,10 +9,11 @@ import { PaymentButton } from "../../components/PaymentButton";
 import { useContext, useEffect } from "react";
 import { CoffeeContext } from "../../context/CoffeeContext";
 import { InputQuantity } from "../../components/InputQuantity";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Checkout() {
-  const { cartItems, subtractFromCart, updateQuantity } =
+  const navigate = useNavigate();
+  const { cartItems, subtractFromCart, updateQuantity, removeFromCart } =
     useContext(CoffeeContext);
 
   function handleUpdateItemQuantity(coffeeId: number) {
@@ -23,11 +24,15 @@ export function Checkout() {
     subtractFromCart(coffeeId);
   }
 
+  function handleRemoveItemFromCart(coffeeId: number) {
+    removeFromCart(coffeeId);
+  }
+
   useEffect(() => {
     if (cartItems.length === 0) {
-      redirect("/");
+      return navigate("/");
     }
-  }, []);
+  }, [cartItems]);
 
   return (
     <div className="container mx-auto grid grid-cols-2 gap-x-8 mt-10">
@@ -123,7 +128,10 @@ export function Checkout() {
                       handleAdd={() => handleUpdateItemQuantity(item.id)}
                       handleSubtract={() => handleSubtractItemQuantity(item.id)}
                     />
-                    <div className="flex items-center p-2 bg-base-button rounded-md ml-2 hover:bg-base-hover cursor-pointer">
+                    <div
+                      className="flex items-center p-2 bg-base-button rounded-md ml-2 hover:bg-base-hover cursor-pointer"
+                      onClick={() => handleRemoveItemFromCart(item.id)}
+                    >
                       <TrashIcon className="w-5 h-5 text-purple" />
                       <div className="text-base-text text-xs ml-2">REMOVER</div>
                     </div>

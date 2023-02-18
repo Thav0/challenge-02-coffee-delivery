@@ -21,7 +21,6 @@ export interface UserAddress {
 }
 
 interface CoffeesState {
-  totalItems: number;
   cartItems: Coffe[];
   userAddress: UserAddress | null;
 }
@@ -36,7 +35,6 @@ export function coffeesReducer(state: CoffeesState, action: any) {
 
         if (cartItemIndex < 0) {
           draft.cartItems.push(action.payload.coffee);
-          draft.totalItems++;
         } else if (cartItemIndex >= 0) {
           draft.cartItems[cartItemIndex].quantity++;
         }
@@ -68,7 +66,9 @@ export function coffeesReducer(state: CoffeesState, action: any) {
         const item = draft.cartItems[cartItemIndex];
 
         if (item.quantity === 1) {
-          draft.cartItems.filter((currentItem) => currentItem.id !== item.id);
+          draft.cartItems = draft.cartItems.filter(
+            (currentItem) => currentItem.id !== item.id
+          );
         } else {
           draft.cartItems[cartItemIndex].quantity--;
         }
@@ -86,7 +86,9 @@ export function coffeesReducer(state: CoffeesState, action: any) {
 
         const item = draft.cartItems[cartItemIndex];
 
-        draft.cartItems.filter((currentItem) => currentItem.id !== item.id);
+        draft.cartItems = draft.cartItems.filter(
+          (currentItem) => currentItem.id !== item.id
+        );
       });
 
     default:

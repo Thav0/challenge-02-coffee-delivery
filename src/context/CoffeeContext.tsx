@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useReducer, useState } from "react";
 import {
   addToCartAction,
+  removeItemFromCartAction,
   subtractItemQuantityAction,
   updateItemQuantityAction,
 } from "../reducers/actions";
@@ -35,12 +36,12 @@ export function CoffeeContextProvider({
   children,
 }: CoffeeContextProviderProps) {
   const [coffeesState, dispatch] = useReducer(coffeesReducer, {
-    totalItems: 0,
     cartItems: [],
     userAddress: null,
   });
-  const { cartItems, totalItems, userAddress } = coffeesState;
+  const { cartItems, userAddress } = coffeesState;
   const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD);
+  const totalItems = cartItems.length;
 
   function addToCart(coffee: Coffe) {
     dispatch(addToCartAction(coffee));
@@ -51,7 +52,7 @@ export function CoffeeContextProvider({
   }
 
   function removeFromCart(coffeeId: number) {
-    dispatch(removeFromCart(coffeeId));
+    dispatch(removeItemFromCartAction(coffeeId));
   }
 
   function setUserAddress(address: UserAddress) {

@@ -35,7 +35,7 @@ export function subtractItemQuantityAction(coffeeId: number) {
   };
 }
 
-export function removeItemFromCart(coffeeId: number) {
+export function removeItemFromCartAction(coffeeId: number) {
   return {
     type: ActionTypes.REMOVE_FROM_CART,
     payload: {
