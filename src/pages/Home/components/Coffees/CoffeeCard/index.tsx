@@ -4,8 +4,13 @@ import { ReactComponent as MinusIcon } from "@assets/icons/minus.svg";
 import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
 import { useContext, useState } from "react";
 import { CoffeeContext } from "../../../../../context/CoffeeContext";
+import { Coffe } from "../../../../../reducers/reducer";
 
-export function CoffeeCard() {
+interface CoffeeCardProp {
+  coffee: Coffe;
+}
+
+export function CoffeeCard({ coffee }: CoffeeCardProp) {
   const { addToCart } = useContext(CoffeeContext);
   const [quantity, setQuantity] = useState(1);
 
@@ -24,7 +29,7 @@ export function CoffeeCard() {
   return (
     <div className="bg-base-card p-5 rounded-tl-md rounded-tr-4xl rounded-bl-4xl rounded-br-md">
       <img
-        src={TraditionalEspressoIMG}
+        src={`/src/assets/${coffee.image}`}
         alt="Expresso Tradicional"
         className="mx-auto -mt-10"
       />
@@ -33,17 +38,15 @@ export function CoffeeCard() {
           TRADICIONAL
         </span>
         <h3 className="mt-4 text-title-s font-heading font-bold text-base-subtitle">
-          Expresso Tradicional
+          {coffee.name}
         </h3>
-        <p className="text-base-label text-regular-s">
-          O tradicional café feito com água quente e grãos moídos
-        </p>
+        <p className="text-base-label text-regular-s">{coffee.description}</p>
       </div>
       <div className="flex justify-between items-center mt-8">
         <div className="text-base-text">
           <span className="text-xs">R$</span>
           <span className="font-heading font-black leading-none text-2xl ml-1">
-            9,90
+            {coffee.price}
           </span>
         </div>
         <div className="flex items-center">
@@ -62,10 +65,11 @@ export function CoffeeCard() {
             onClick={() => {
               setQuantity(1);
               addToCart({
-                id: 1,
-                name: "Café espresso",
-                quantity: 1,
-                price: 9.99,
+                id: coffee.id,
+                name: coffee.name,
+                quantity,
+                price: coffee.price,
+                image: coffee.image,
               });
             }}
           >

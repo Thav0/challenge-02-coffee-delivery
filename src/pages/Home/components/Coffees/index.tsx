@@ -27,7 +27,9 @@ export function Coffees() {
       <div className="grid py-8 gap-y-9 gap-x-8 md:grid-cols-3 lg:grid-cols-4">
         {isLoading
           ? "<div>Carregando</div>"
-          : coffess.map((coffe) => <CoffeeCard key={coffe.id} />)}
+          : coffess.map((coffee) => (
+              <CoffeeCard coffee={coffee} key={coffee.id} />
+            ))}
       </div>
     </section>
   );

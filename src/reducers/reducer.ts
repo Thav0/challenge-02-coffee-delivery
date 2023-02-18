@@ -6,6 +6,8 @@ export interface Coffe {
   name: string;
   quantity: number;
   price: number;
+  image: string;
+  description: string;
 }
 
 export interface UserAddress {
