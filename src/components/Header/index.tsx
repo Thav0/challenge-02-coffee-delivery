@@ -3,14 +3,16 @@ import { ReactComponent as LocationIcon } from "@assets/icons/location.svg";
 import { ReactComponent as CartIcon } from "@assets/icons/cart.svg";
 import { useContext } from "react";
 import { CoffeeContext } from "../../context/CoffeeContext";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export function Header() {
   const { totalItems } = useContext(CoffeeContext);
 
   return (
     <header className="container mx-auto py-8 flex justify-between items-center">
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       <div className="flex items-center">
         <div className="flex items-center p-2 bg-purple-light text-purple-dark rounded-md">
           <LocationIcon className=" w-4 h-4" />
