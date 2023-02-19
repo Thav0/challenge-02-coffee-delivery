@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useReducer, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import {
   addToCartAction,
   removeItemFromCartAction,
@@ -36,14 +42,38 @@ interface CoffeeContextProviderProps {
 export function CoffeeContextProvider({
   children,
 }: CoffeeContextProviderProps) {
-  const [coffeesState, dispatch] = useReducer(coffeesReducer, {
-    cartItems: [],
-    userAddress: null,
-  });
+  const [coffeesState, dispatch] = useReducer(
+    coffeesReducer,
+    {
+      cartItems: [],
+      userAddress: null,
+    },
+    () => {
+      const storedStateAsJSON = localStorage.getItem(
+        "@ignite-challenge-02:coffee-state-1.0.0"
+      );
+
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON);
+      }
+
+      return {
+        cartItems: [],
+        userAddress: null,
+      };
+    }
+  );
+
   const { cartItems, userAddress } = coffeesState;
   const [paymentType, setPaymentType] = useState(PAYMENT_TYPE.CREDIT_CARD);
   const totalItems = cartItems.length;
   const shippingPrice = 3.5;
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(coffeesState);
+
+    localStorage.setItem("@ignite-challenge-02:coffee-state-1.0.0", stateJSON);
+  }, [coffeesState]);
 
   function addToCart(coffee: Coffe) {
     dispatch(addToCartAction(coffee));
