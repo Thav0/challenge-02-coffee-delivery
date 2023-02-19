@@ -1,11 +1,26 @@
-interface PaymentButtonProps {
+import { HTMLAttributes } from "react";
+
+interface PaymentButtonProps extends HTMLAttributes<HTMLDivElement> {
   Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   name: string;
+  isSelected: boolean;
 }
 
-export function PaymentButton({ Icon, name }: PaymentButtonProps) {
+export function PaymentButton({
+  Icon,
+  name,
+  isSelected,
+  ...rest
+}: PaymentButtonProps) {
   return (
-    <div className="flex items-center bg-base-button p-4 rounded-md grow hover:bg-base-hover">
+    <div
+      className={`flex items-center ${
+        isSelected
+          ? "bg-purple-light border border-purple"
+          : "bg-base-button border"
+      } p-4 rounded-md grow cursor-pointer hover:bg-base-hover `}
+      {...rest}
+    >
       <span>
         <Icon className="w-4 h-4 text-purple" />
       </span>
