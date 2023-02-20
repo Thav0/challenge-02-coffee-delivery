@@ -11,7 +11,10 @@ import { InputQuantity } from "../../components/InputQuantity";
 import { useNavigate } from "react-router-dom";
 import { numberToCurrencyBrazil } from "../../utils/numberToCurrencyBrazil";
 import { useForm } from "react-hook-form";
-import { InputText } from "./styles";
+import { InputMaskSyled, InputText } from "./styles";
+import * as zod from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { string } from "zod";
 
 export enum PAYMENT_TYPES {
   CREDIT_CARD = "CREDIT_CARD",
@@ -19,9 +22,45 @@ export enum PAYMENT_TYPES {
   MONEY = "MONEY",
 }
 
+const CEP_REGEX = /^[0-9]{5}-[0-9]{3}$/;
+
+const coffeeFormValidationSchema = zod.object({
+  cep: zod.string().regex(CEP_REGEX, "CEP inválido"),
+  street: zod
+    .string()
+    .min(5, "Preencha a Rua corretamente")
+    .max(60, "Preencha a Rua corretamente"),
+  street_number: string().max(25, "O campo excede os 25 caracteres"),
+  additional_info: string(),
+  neighboorhod: string().max(30, "Campo excede os 30 caracteres"),
+  city: string(),
+  state: string().max(30, "O campo excede os 30 caracteres"),
+});
+
+type CoffeeFormData = zod.infer<typeof coffeeFormValidationSchema>;
+
 export function Checkout() {
-  // const { register } = useFormContext();
-  const { register, handleSubmit } = useForm();
+  const coffeeForm = useForm<CoffeeFormData>({
+    resolver: zodResolver(coffeeFormValidationSchema),
+    defaultValues: {
+      cep: "",
+      street: "",
+      street_number: "",
+      additional_info: "",
+      neighboorhod: "",
+      city: "",
+      state: "",
+    },
+  });
+  const {
+    handleSubmit,
+    watch,
+    register,
+    formState: { errors },
+  } = coffeeForm;
+
+  const formIsInvalid = Object.keys(errors).length > 0;
+
   const navigate = useNavigate();
   const {
     cartItems,
@@ -95,9 +134,10 @@ export function Checkout() {
             <div className="mt-8 space-y-4">
               <div className="grid grid-cols-3">
                 <div className="col-span-1">
-                  <InputText
-                    type="text"
+                  <InputMaskSyled
+                    mask="99999-999"
                     placeholder="CEP"
+                    isValid={errors.cep === undefined}
                     {...register("cep")}
                   />
                 </div>
@@ -106,6 +146,7 @@ export function Checkout() {
                 <InputText
                   placeholder="Rua"
                   type="text"
+                  isValid={errors.street === undefined}
                   {...register("street")}
                 />
               </div>
@@ -114,6 +155,7 @@ export function Checkout() {
                   <InputText
                     placeholder="Número"
                     type="text"
+                    isValid={errors.street_number === undefined}
                     {...register("street_number")}
                   />
                 </div>
@@ -121,6 +163,7 @@ export function Checkout() {
                   <InputText
                     placeholder="Complemento"
                     type="text"
+                    isValid={errors.additional_info === undefined}
                     {...register("additional_info")}
                   />
                 </div>
@@ -130,6 +173,7 @@ export function Checkout() {
                   <InputText
                     placeholder="Bairro"
                     type="text"
+                    isValid={errors.neighboorhod === undefined}
                     {...register("neighboorhod")}
                   />
                 </div>
@@ -137,6 +181,7 @@ export function Checkout() {
                   <InputText
                     placeholder="Cidade"
                     type="text"
+                    isValid={errors.city === undefined}
                     {...register("city")}
                   />
                 </div>
@@ -144,6 +189,7 @@ export function Checkout() {
                   <InputText
                     placeholder="UF"
                     type="text"
+                    isValid={errors.state === undefined}
                     {...register("state")}
                   />
                 </div>
