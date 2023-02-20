@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 import InputMask from "react-input-mask";
 
-interface InputMaskProps {
+interface InputMaskProps extends React.InputHTMLAttributes<HTMLInputElement> {
   isValid: boolean;
 }
 

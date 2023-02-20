@@ -1,4 +1,5 @@
 import produce from "immer";
+import { PAYMENT_TYPES } from "../pages/Checkout";
 import { ActionTypes } from "./actions";
 
 export interface Coffe {
@@ -24,6 +25,7 @@ export interface UserAddress {
 interface CoffeesState {
   cartItems: Coffe[];
   userAddress: UserAddress | null;
+  paymentType: PAYMENT_TYPES.CREDIT_CARD | PAYMENT_TYPES;
 }
 
 export function coffeesReducer(state: CoffeesState, action: any) {
@@ -90,6 +92,13 @@ export function coffeesReducer(state: CoffeesState, action: any) {
         draft.cartItems = draft.cartItems.filter(
           (currentItem) => currentItem.id !== item.id
         );
+      });
+
+    case ActionTypes.PAYMENT_CONFIRM:
+      return produce(state, (draft) => {
+        (draft.userAddress = action.payload.userAddress),
+          (draft.cartItems = []),
+          (draft.paymentType = action.payload.paymentType);
       });
 
     default:

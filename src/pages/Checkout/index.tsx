@@ -15,6 +15,7 @@ import { InputMaskSyled, InputText } from "./styles";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { string } from "zod";
+import { UserAddress } from "../../reducers/reducer";
 
 export enum PAYMENT_TYPES {
   CREDIT_CARD = "CREDIT_CARD",
@@ -30,8 +31,8 @@ const coffeeFormValidationSchema = zod.object({
     .string()
     .min(5, "Preencha a Rua corretamente")
     .max(60, "Preencha a Rua corretamente"),
-  street_number: string().max(25, "O campo excede os 25 caracteres"),
-  additional_info: string(),
+  streetNumber: string().max(25, "O campo excede os 25 caracteres"),
+  additionalInfo: string(),
   neighboorhod: string().max(30, "Campo excede os 30 caracteres"),
   city: string(),
   state: string().max(30, "O campo excede os 30 caracteres"),
@@ -43,13 +44,13 @@ export function Checkout() {
   const coffeeForm = useForm<CoffeeFormData>({
     resolver: zodResolver(coffeeFormValidationSchema),
     defaultValues: {
-      cep: "",
-      street: "",
-      street_number: "",
-      additional_info: "",
-      neighboorhod: "",
-      city: "",
-      state: "",
+      cep: "86187-020",
+      street: "Rua teste",
+      streetNumber: "12",
+      additionalInfo: "Casa dos fundos",
+      neighboorhod: "Jd. Silva",
+      city: "Londrina",
+      state: "Paraná",
     },
   });
   const {
@@ -59,8 +60,6 @@ export function Checkout() {
     formState: { errors },
   } = coffeeForm;
 
-  const formIsInvalid = Object.keys(errors).length > 0;
-
   const navigate = useNavigate();
   const {
     cartItems,
@@ -68,6 +67,7 @@ export function Checkout() {
     updateQuantity,
     removeFromCart,
     shippingPrice,
+    confirmPayment,
   } = useContext(CoffeeContext);
   const [paymentType, setPaymentType] = useState(PAYMENT_TYPES.CREDIT_CARD);
 
@@ -93,8 +93,9 @@ export function Checkout() {
     return totalCartItems() + shippingPrice;
   }
 
-  function handleConfirmPayment(data) {
-    console.log(data);
+  function handleConfirmPayment(data: UserAddress) {
+    confirmPayment(data, paymentType);
+    navigate("/payment-confirmed");
   }
 
   function isPaymentTypeSelected(paymentTypeName: PAYMENT_TYPES) {
@@ -155,16 +156,16 @@ export function Checkout() {
                   <InputText
                     placeholder="Número"
                     type="text"
-                    isValid={errors.street_number === undefined}
-                    {...register("street_number")}
+                    isValid={errors.streetNumber === undefined}
+                    {...register("streetNumber")}
                   />
                 </div>
                 <div className="col-span-2">
                   <InputText
                     placeholder="Complemento"
                     type="text"
-                    isValid={errors.additional_info === undefined}
-                    {...register("additional_info")}
+                    isValid={errors.additionalInfo === undefined}
+                    {...register("additionalInfo")}
                   />
                 </div>
               </div>

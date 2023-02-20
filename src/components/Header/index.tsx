@@ -19,7 +19,7 @@ export function Header() {
           <span className="ml-2 text-sm">Porto, Portugal</span>
         </div>
         <NavLink
-          to={totalItems > 0 ? "/checkout-address" : "/"}
+          to={totalItems > 0 ? "/checkout" : "/"}
           className="ml-3 p-2 rounded-md bg-yellow-light text-yellow-dark relative"
         >
           <CartIcon className="w-4 h-4" />

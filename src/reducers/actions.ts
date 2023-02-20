@@ -1,4 +1,5 @@
-import { Coffe } from "./reducer";
+import { PAYMENT_TYPES } from "../pages/Checkout";
+import { Coffe, UserAddress } from "./reducer";
 
 export enum ActionTypes {
   ADD_TO_CART = "ADD_TO_CART",
@@ -6,6 +7,7 @@ export enum ActionTypes {
   UPDATE_ITEM_QUANTITY = "UPDATE_ITEM_QUANTITY",
   REMOVE_FROM_CART = "REMOVE_FROM_CART",
   UPDATE_USER_ADDRESS = "UPDATE_USER_ADDRESS",
+  PAYMENT_CONFIRM = "PAYMENT_CONFIRM",
 }
 
 export function addToCartAction(coffee: Coffe) {
@@ -40,6 +42,19 @@ export function removeItemFromCartAction(coffeeId: number) {
     type: ActionTypes.REMOVE_FROM_CART,
     payload: {
       coffeeId,
+    },
+  };
+}
+
+export function confirmPaymentAction(
+  userAddress: UserAddress,
+  paymentType: PAYMENT_TYPES
+) {
+  return {
+    type: ActionTypes.PAYMENT_CONFIRM,
+    payload: {
+      userAddress,
+      paymentType,
     },
   };
 }
